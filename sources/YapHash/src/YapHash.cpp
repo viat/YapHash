@@ -30,6 +30,12 @@
 #include "VIATUtilities.h"
 #include "fftw3.h"
 
+#ifndef __APPLE__
+#include <malloc.h>
+#include <stdlib.h>
+#endif
+
+
 
 //#define LOGSPEC_MFCC // apply logarithm to spectrogram first, then apply mel-filterbank (takes some time)
 
