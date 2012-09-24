@@ -18,7 +18,7 @@ The sign of the differences in between the frequency bands and the MFCCs form a 
 ###Usage
 
 YapHash is currently a command line tool and expects at least two arguments; 
-First is the configuration file e.g. _viat.cfg_, second is the input wave file. 
+First is the configuration file e.g. _hash.cfg_, second is the input wave file. 
 To specify the output path a third argument can be passed optionally. 
 
 Example:
