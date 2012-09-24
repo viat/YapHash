@@ -42,55 +42,63 @@ int parseConfig(const char *configfile, Parameter *pParam) {
         }
         
         // parse option
-        if (strcmp(optionname, "WINDOWSIZE") == 0) 
-            pParam->windowSize = (unsigned int) atoi(optionvalue);
+        if (strcmp(optionname, "DEBUG_LEVEL") == 0)
+			pParam->debugLevel = (unsigned int) atoi(optionvalue);
+		
+        else if (strcmp(optionname, "WINDOWSIZE") == 0)
+			pParam->windowSize = (unsigned int) atoi(optionvalue);
         
-        else if (strcmp(optionname, "STEPSIZE") == 0)
-            pParam->stepSize = (unsigned int) atoi(optionvalue);
+		else if (strcmp(optionname, "STEPSIZE") == 0)
+			pParam->stepSize = (unsigned int) atoi(optionvalue);
         
-        else if (strcmp(optionname, "HICUT") == 0) 
-            pParam->hiCut = (unsigned int) atoi(optionvalue);
+		else if (strcmp(optionname, "SAMPLERATE") == 0)
+			pParam->samplerate = (unsigned int) atoi(optionvalue);
         
-        else if (strcmp(optionname, "LOCUT") == 0) 
-            pParam->loCut = (unsigned int) atoi(optionvalue);
+		else if (strcmp(optionname, "HICUT") == 0)
+			pParam->hiCut = (unsigned int) atoi(optionvalue);
         
-        else if (strcmp(optionname, "ENERGY_THRESHOLD") == 0) 
-            pParam->energyThreshold = (unsigned int) atoi(optionvalue);
+		else if (strcmp(optionname, "LOCUT") == 0)
+			pParam->loCut = (unsigned int) atoi(optionvalue);
         
-        else if (strcmp(optionname, "VAD_THRESHOLD") == 0)
-            pParam->vadThreshold = (unsigned int) atoi(optionvalue);
+		else if (strcmp(optionname, "ENERGY_THRESHOLD") == 0)
+			pParam->energyThreshold = (unsigned int) atoi(optionvalue);
         
-        else if (strcmp(optionname, "POSTPRO_THRESHOLD") == 0)
-            pParam->energyThreshold = (unsigned int) atoi(optionvalue);
+		else if (strcmp(optionname, "VAD_THRESHOLD") == 0)
+			pParam->vadThreshold = (unsigned int) atoi(optionvalue);
         
-        else if (strcmp(optionname, "DECLICKER_THRESHOLD") == 0)
-            pParam->declickerThreshold = (unsigned int) atoi(optionvalue);
+		else if (strcmp(optionname, "POSTPRO_THRESHOLD") == 0)
+			pParam->energyThreshold = (unsigned int) atoi(optionvalue);
         
-        else if (strcmp(optionname, "PREEMPHASIZE_FACTOR") == 0)
-            pParam->preEmphasizeFactor = (unsigned int) atoi(optionvalue);
+		else if (strcmp(optionname, "DECLICKER_THRESHOLD") == 0)
+			pParam->declickerThreshold = (unsigned int) atoi(optionvalue);
         
-        else if (strcmp(optionname, "MAX_HASH_LEN") == 0)
-            pParam->maxHashLen = (unsigned int) atoi(optionvalue);
+		else if (strcmp(optionname, "PREEMPHASIZE_FACTOR") == 0)
+			pParam->preEmphasizeFactor = (unsigned int) atoi(optionvalue);
         
-        else if (strcmp(optionname, "NUMBER_OF_MEL_COEFF") == 0)
-            pParam->melCoeffs = (unsigned int) atoi(optionvalue);
-
-        else if (strcmp(optionname, "NUMBER_OF_MFCC") == 0)
-            pParam->mfccCoeffs = (unsigned int) atoi(optionvalue);
-
-        else if (strcmp(optionname, "PORT") == 0)
-            pParam->port = (unsigned int) atoi(optionvalue);
-
-        else if (strcmp(optionname, "IP_ADDRESS") == 0) {
-            memcpy(pParam->ipAddress, optionvalue, strlen(optionvalue));
-        }
+		else if (strcmp(optionname, "MAX_HASH_LEN") == 0)
+			pParam->maxHashLen = (unsigned int) atoi(optionvalue);
+        
+		else if (strcmp(optionname, "MAX_AUDIO_LEN") == 0)
+			pParam->maxAudioLen = (unsigned int) atoi(optionvalue);
+        
+		else if (strcmp(optionname, "MIN_AUDIO_LEN") == 0)
+			pParam->minAudioLen = (unsigned int) atoi(optionvalue);
+        
+		else if (strcmp(optionname, "NUMBER_OF_MEL_COEFF") == 0)
+			pParam->melCoeffs = (unsigned int) atoi(optionvalue);
+        
+		else if (strcmp(optionname, "NUMBER_OF_MFCC") == 0)
+			pParam->mfccCoeffs = (unsigned int) atoi(optionvalue);
     }
     
     // close configuration file
     fclose(conffile);
     
-    if (!(pParam->maxHashLen || pParam->windowSize || pParam->stepSize))
-        return CONFIG_ERROR;
+    if (!( pParam->windowSize && pParam->stepSize && pParam->declickerThreshold
+          && pParam->energyThreshold && pParam->hiCut  && pParam->loCut && pParam->maxAudioLen 
+          && pParam->maxHashLen && pParam->melCoeffs && pParam->mfccCoeffs && pParam->minAudioLen 
+          && pParam->samplerate && pParam->vadThreshold))
+		return CONFIG_ERROR;
 
     // TODO: check for missing options
     

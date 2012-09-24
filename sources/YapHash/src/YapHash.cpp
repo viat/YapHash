@@ -55,12 +55,12 @@ void YapHash::calcHash(const Audio& audio, MelFb melBank, Parameter *param)
     // calc stft
     Stft stft = Stft(audio, param->windowSize, param->stepSize);
     
-#if DEBUG_LEVEL > 2
-    debugStftToCSV("debugStft.csv",&stft);
-    cout << "Wrote STFT coefficients to file debugStft.csv" << endl;
-    debugFbToCSV("debugMelFb.csv", &melBank);
-    cout << "Wrote Mel Filterbank to file debugMelFb.csv" << endl;
-#endif
+    if (param->debugLevel > 2){
+        debugStftToCSV("debugStft.csv",&stft);
+        cout << "Wrote STFT coefficients to file debugStft.csv" << endl;
+        debugFbToCSV("debugMelFb.csv", &melBank);
+        cout << "Wrote Mel Filterbank to file debugMelFb.csv" << endl;
+    }
     
     int stftCoeffs = param->melCoeffs+1; // diff
     int mfccCoeffs = param->mfccCoeffs+2; // diff + no C(0)
@@ -81,11 +81,10 @@ void YapHash::calcHash(const Audio& audio, MelFb melBank, Parameter *param)
     // Apply mel filterbank and write to buffer
     melBank.applyMelFB(melSpec.data, stft);  
     
-#if DEBUG_LEVEL > 2
-    debug2DToCSV("debugMelSpec.csv",&melSpec,stft.NoOfWindows,stftCoeffs);
-    cout << "Wrote Mel Spectrum coefficients to file debugMelSpec.csv" << endl;
-#endif
-    
+    if (param->debugLevel > 2){
+        debug2DToCSV("debugMelSpec.csv",&melSpec,stft.NoOfWindows,stftCoeffs);
+        cout << "Wrote Mel Spectrum coefficients to file debugMelSpec.csv" << endl;
+    }    
     // HASH - stft
     // derivation in frequency direction
     for (int y=0; y<stftCoeffs-2; y++) {  
@@ -103,10 +102,10 @@ void YapHash::calcHash(const Audio& audio, MelFb melBank, Parameter *param)
                 dStft.data[x][y] = 0;
         }
     }
-#if DEBUG_LEVEL > 2
-    debug2DToCSV("debugStftDiff.csv",&dStft,stft.NoOfWindows-1,stftCoeffs-1);
-    cout << "Wrote STFT binary derivation coefficients to file debugStftDiff.csv" << endl;
-#endif
+    if (param->debugLevel > 2){
+        debug2DToCSV("debugStftDiff.csv",&dStft,stft.NoOfWindows-1,stftCoeffs-1);
+        cout << "Wrote STFT binary derivation coefficients to file debugStftDiff.csv" << endl;
+    }
     
 #ifdef LOGSPEC_MFCC 
     Array2d_32f melLogSpec = Array2d_32f(stft.NoOfWindows, stftCoeffs);
@@ -132,10 +131,10 @@ void YapHash::calcHash(const Audio& audio, MelFb melBank, Parameter *param)
         // copy all coeffs but C(0)
         fwsConvert_64f32f(&pTmp[1], &mfcc.data[i][0], mfccCoeffs-1);
         
-#if DEBUG_LEVEL > 2
-        debug2DToCSV("debugMfcc.csv", &mfcc, stft.NoOfWindows, mfccCoeffs-1);
-        cout << "Wrote MFCC coefficients to file debugMfcc.csv" << endl;
-#endif
+        if (param->debugLevel > 2){
+            debug2DToCSV("debugMfcc.csv", &mfcc, stft.NoOfWindows, mfccCoeffs-1);
+            cout << "Wrote MFCC coefficients to file debugMfcc.csv" << endl;
+        }
     }
 #else    
     // MFCC => LN + DCT
@@ -155,10 +154,10 @@ void YapHash::calcHash(const Audio& audio, MelFb melBank, Parameter *param)
         fwsConvert_64f32f(&pTmp[1], &mfcc.data[i][0], mfccCoeffs-1);
         
     }
-#if DEBUG_LEVEL > 2
-    debug2DToCSV("debugMfcc.csv", &mfcc, stft.NoOfWindows, mfccCoeffs-1);
-    cout << "Wrote MFCC coefficients to file debugMfcc.csv" << endl;
-#endif
+    if (param->debugLevel > 2){
+        debug2DToCSV("debugMfcc.csv", &mfcc, stft.NoOfWindows, mfccCoeffs-1);
+        cout << "Wrote MFCC coefficients to file debugMfcc.csv" << endl;
+    }
     
 #endif
     
@@ -185,11 +184,10 @@ void YapHash::calcHash(const Audio& audio, MelFb melBank, Parameter *param)
         // ippsThreshold_LTValGTVal_32f_I(&dMfcc.data[0][y], stft.NoOfWindows, 0, 0, 0, 1); 
     }
     
-#if DEBUG_LEVEL > 2
-    debug2DToCSV("debugMfccDiff.csv",&dMfcc,stft.NoOfWindows-1,mfccCoeffs-2);
-    cout << "Wrote MFCC binary frequency differences to file debugMfccDiff.csv" << endl;
-#endif
-    
+    if (param->debugLevel > 2){
+        debug2DToCSV("debugMfccDiff.csv",&dMfcc,stft.NoOfWindows-1,mfccCoeffs-2);
+        cout << "Wrote MFCC binary frequency differences to file debugMfccDiff.csv" << endl;
+    }    
     // generate hash of each column
     
     unsigned long *mfcHash = (unsigned long*)malloc((stft.NoOfWindows-1) * sizeof(unsigned long));
@@ -222,10 +220,10 @@ void YapHash::calcHash(const Audio& audio, MelFb melBank, Parameter *param)
     free(stftHash);
     free(e);
     
-#if DEBUG_LEVEL > 2
-    // writeIndexToCSV("debugMfcc.csv", mfcHash, stft.NoOfWindows-1);
-    // writeIndexToCSV("debugStft.csv", stftHash, stft.NoOfWindows-1);
-#endif
+    if (param->debugLevel > 2){
+        // writeIndexToCSV("debugMfcc.csv", mfcHash, stft.NoOfWindows-1);
+        // writeIndexToCSV("debugStft.csv", stftHash, stft.NoOfWindows-1);
+    }
 }
 
 // binary to decimal: vector € {0,1}, len < 32

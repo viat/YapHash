@@ -19,7 +19,7 @@
  
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
+ */
 
 #include <iostream>
 #include <fstream>
@@ -73,30 +73,28 @@ int main(int argc, const char * argv[]) {
         
         // create mel Filterbank
         MelFb *melBank = new MelFb(param.windowSize, param.melCoeffs+1, param.loCut, param.hiCut);
-
-#if DEBUG_LEVEL > 0
-        Fw64u timeStamp1;
-        timeStamp1  = fwGetCpuClocks();
-#endif
         
+        Fw64u timeStamp1;
+        if (param.debugLevel > 0)
+            timeStamp1  = fwGetCpuClocks();
+            
         // calculate the hashvalues
         YapHash *pHash = new YapHash(*audio, *melBank, &param);
-                
-#if DEBUG_LEVEL > 0
-        Fw64u timeStamp2 = fwGetCpuClocks();// get timestamp
-        cout << (timeStamp2 - timeStamp1)/(2.4*1E9) << endl;
-#endif
         
+        if (param.debugLevel > 0){
+            Fw64u timeStamp2 = fwGetCpuClocks();// get timestamp
+            cout << (timeStamp2 - timeStamp1)/(2.4*1E9) << endl;
+        }        
         
         // write to file
         int len = MIN(pHash->length(), param.maxHashLen); // a maximum of 100 hashvalues should be sufficient
         
 		if (argc > 3) {
-				writeIndexToCSV(argv[3], pHash->index, len); // write to csv with given name
-                cout << "Wrote Hash vecors to file " << argv[3] << endl;
+            writeIndexToCSV(argv[3], pHash->index, len); // write to csv with given name
+            cout << "Wrote Hash vecors to file " << argv[3] << endl;
 		} else // write to csv with audio filename + .csv
 			writeIndexToCSV(argv[2], pHash->index, len);
-            
+        
 		// free memory
 		free(pHash);
         

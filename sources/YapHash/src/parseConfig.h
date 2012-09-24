@@ -16,20 +16,22 @@
 
 typedef struct Parameter{
     
+    int samplerate;			// in Hz, only tested with 8000 Hz
     int vadThreshold;
-    int windowSize;
-    int stepSize;
-    int hiCut;
-    int loCut;
+    int windowSize;			// in samples
+    int stepSize;			// in samples
+    int hiCut;				// f in Hz
+    int loCut;				// f in Hz
     int energyThreshold;
-    int ipLength;
-    char ipAddress[17];
-    int port;
     int declickerThreshold;
     int preEmphasizeFactor;
-    int maxHashLen;
+    unsigned int maxHashLen; // number of tupels
+    int maxAudioLen;        // in seconds
+    int minAudioLen;        // in seconds
     int mfccCoeffs;
     int melCoeffs;
+    int debugLevel;
+    
 }Parameter;
 
 

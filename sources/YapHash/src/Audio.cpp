@@ -87,12 +87,6 @@ Audio::Audio(const char *filePath, int thresholdVAD, int thresholdDeclicker, int
     Fw32f *tmpWav = fwsMalloc_32f(len);
     fwsConvert_16s32f_Sfs(wave.data, tmpWav, len, 15);  
     
-#if DEBUG_LEVEL > 2
-    debugToCSV("debugPreAudio.csv",tmpWav,len);
-    cout << "Wrote original audio data to file debugPreAudio.csv" << endl;
-
-#endif 
-    
     // declicker reduces short spikes in audio data
     deClicker(tmpWav, len, thresholdDeclicker);
     
@@ -114,13 +108,7 @@ Audio::Audio(const char *filePath, int thresholdVAD, int thresholdDeclicker, int
     // copy samples and convert to float32
     samples32f = fwsMalloc_32f(len);
     fwsCopy_32f(tmpWav, samples32f, len);   
-
-#if DEBUG_LEVEL > 2
-    debugToCSV("debugPostAudio.csv",tmpWav,len);
-    cout << "Wrote processed audio data to file debugPostAudio.csv" << endl;
-
-#endif     
-
+    
     delete wave.data;
     fwsFree(tmpWav);
 }
