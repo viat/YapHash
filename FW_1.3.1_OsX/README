@@ -1,0 +1,326 @@
+Copyright (c) 2007-2009, The Framewave Group. All Rights Reserved.
+
+Framewave Version FW_1.3.1
+=================================================
+
+GENERAL INFORMATION 
+
+Framewave(TM) is a collection of low-level software routines for x86 processors.
+Framewave (FW) is designed to aid and accelerate application development, debugging, 
+and optimization. Framewave function capabilities extend from simple arithmetic
+operations to rich, complex domain specific tasks, such as image, video, and 
+signal processing.
+
+=================================================
+
+WEB RESOURCES
+
+Plase visit the Framewave home page at http://framewave.sourceforge.net/
+for news, code samples, documentation, FAQ, and additional information. 
+Updates are posted periodically.
+
+Online documentation for Framewave is available at
+   http://framewave.sourceforge.net/dev_guide.html and
+   http://framewave.sourceforge.net/Manual/.
+
+Visit the Framewave forum at http://sourceforge.net/forum/?group_id=212624.
+The forum can also be visited from http://framewave.sourceforge.net/.
+
+   * Developers forum - This forum is for those who develop or enhance the Framewave APIs.
+   * Open Discussion forum - This forum is for those who use the Framewave library.
+    
+=================================================
+
+FILES
+
+Directory Hierarchy
+    
+  Installation directory
+    |
+    |--Header files
+    |
+    |-DLL
+    |
+    |-lib
+
+
+I)  The DLL sub-directory contents are as follows.
+
+    Microsoft(R) Windows(R) operating system:
+
+         DLL Directory
+
+            a. fwImage/fwSignal/fwBase/fwJPEG/fwVideo.lib
+    
+                    The LIB files contains the Import Address Table (IAT) for 
+                    their respective FW function. Rather than fetching the 
+                    address of the function during run time, the LIB files 
+                    are used to link against a DLL at compile-time.
+    
+            b. fwImage/fwSignal/fwBase/fwJPEG/fwVideo.dll  
+    
+                    The DLL files contain the implemented FW functions.
+    
+II) The lib sub-directory contents are as follows.
+
+    Linux(R), Sun(R) Solaris(R), and Apple(R) Mac OS(R) operating systems:
+    
+         lib Directory
+    
+            a. fwImage/fwSignal/fwBase/fwJPEG/fwVideo.so/.dylib
+    
+                    This directory contains all FW dynamic linked libraries.
+
+    
+III) The following header files are in the installation directory.
+
+    1. fwBase.h contains definitions of data types, data structures, 
+                enumerations, and declarations for core functions. 
+
+    2. fwSignal.h contains function declarations for signal processing.
+  
+       a. Essential Vector Calculation (Add, Sub, Or, Xor, etc.)
+       b. Fixed Accuracy Arithmetic (Inverse, Divide, Ln, etc.)
+       c. Vector Initialization Tasks (Copy, Move, etc.)
+       d. Domain Transform (Multiplication of vectors, etc.)
+       e. AutoCorrelation
+
+    3. fwImage.h contains function declarations for image processing.
+        
+       a. Arithmetic and Logic operations (Add, Sub, Or, etc.)
+       b. Digital Filter Functions (Box Filter, Sobel Filter, etc.)
+       c. Color Model Conversion (RGBToYUV, RGBToYCbCr, etc.)
+       d. Threshold & Compare
+       e. Morphologic Operations
+       f. Geometric Operations
+       g. Color space conversion functions using 3D look up with tri-linear interpolation (3D-LUT functions)
+	       
+    4. fwVideo.h contains function declarations for video processing.
+    
+        a. H.264 Decoder
+        b. H.264 Inverse Transform
+        c. H.264 Reconstruction
+        d. H.264 Intra-predict
+        e. H.264 Interpolation
+        f. Motion Compensation
+        g. Motion Estimation
+        h. MPEG-1:Decoder, Inverse DCT, Inverse Quantization, Reconstruction of DCT block, Variable Lenght decoding
+        i. MPEG-2:Decoder, Inverse DCT, Inverse Quantization, Reconstruction of DCT block, Variable Lenght decoding
+        
+    5. fwJPEG.h contains function declarations for JPEG processing.
+    
+        a. JPEG Color Conversion
+        b. JPEG Sampling
+        c. JPEG Level Shift, Planar-to-Pixel and Pixel-to-Planar
+        d. Quantization and Combined DCT
+        e. Huffman Codec
+
+
+=================================================
+
+HOW TO USE FRAMEWAVE:
+
+Microsoft(R) Windows(R) Operating System:
+-----------------------------------------
+
+1. Make sure that DLL files are in the search PATH using one of the following methods.
+   
+   a. Copy the DLL files to the same folder as the project executable.
+   b. Copy the DLL files to a folder that in the search path 
+      (for example, the Windows folder).
+   c. Modify the PATH environment variable to include the location of the FW DLLs
+      (control panel -> system -> advanced -> environment variables).
+
+2. Add the FW folder to the include search path within Microsoft Visual Studio.
+   
+   a. Project -> properties -> Configuration Properties -> C/C++, General -> Additional Include Directories.
+
+3. Add the FW lib folder to the libraries search path within Microsoft Visual Studio.
+   
+   a. Project -> properties -> Configuration Properties -> Linker -> General -> Additional Library Directories.
+
+
+Linux(R) Operating System:
+--------------------------
+
+Do the following for both 32-bit and 64-bit installations (assuming the installation directory is "ExampleDir").
+
+1. To use the shared libraries, create the following symbolic links.
+
+        For 64 bit installation
+            cd ExampleDir/FW_1.3.1_Lin64/lib
+            
+        For 32 bit installation
+            cd ExampleDir/FW_1.3.1_Lin32/lib
+            
+        Then create the following soft links using the following commands. 
+        
+        ln -sf ./libfwBase.so.1.3.1 libfwBase.so.1
+        ln -sf ./libfwImage.so.1.3.1 libfwImage.so.1
+        ln -sf ./libfwJPEG.so.1.3.1 libfwJPEG.so.1
+        ln -sf ./libfwSignal.so.1.3.1 libfwSignal.so.1
+        ln -sf ./libfwVideo.so.1.3.1 libfwVideo.so.1
+
+        ln -sf ./libfwBase.so.1 libfwBase.so
+        ln -sf ./libfwImage.so.1 libfwImage.so
+        ln -sf ./libfwJPEG.so.1 libfwJPEG.so
+        ln -sf ./libfwSignal.so.1 libfwSignal.so
+        ln -sf ./libfwVideo.so.1 libfwVideo.so
+
+2. Compile a cpp file that uses FW (for example, test.cpp) as follows.
+        
+        To create 64 bit binaries:
+            g++ -m64 -c -IExampleDir/FW_1.3.1_Lin64 test.cpp
+
+        To create 32 bit binaries:
+            g++ -m32 -c -IExampleDir/FW_1.3.1_Lin32 test.cpp
+
+3. All FW libraries have dependency on fwBase. 
+
+        For example, link with the Image library as follows.
+
+        To link to 64 bit binaries:
+            g++ -m64 -LExampleDir/FW_1.3.1_Lin64/lib test.o -lfwImage -lfwBase
+
+        To link to 32 bit binaries:
+            g++ -m32 -LExampleDir/FW_1.3.1_Lin32/lib test.o -lfwImage -lfwBase
+
+4. It may be necessary to explicitly link in the stdc++, pthreads, 
+   or math libraries if they are not automatically linked in. 
+
+5. Before running the application, make sure the ExampleDir/FW_1.3.1_Lin64/lib (for 64-bit installation) or 
+   ExampleDir/FW_1.3.1_Lin32/lib (for 32-bit installation) is in the environment's shared library (LD_LIBRARY_PATH) search path.
+    
+    The following example shows the correct bash shell command syntax.
+
+            $ export LD_LIBRARY_PATH=ExampleDir/FW_1.3.1_Lin64/lib:$LD_LIBRARY_PATH
+   
+        For 32 bit installation:   
+            $ export LD_LIBRARY_PATH=ExampleDir/FW_1.3.1_Lin32/lib:$LD_LIBRARY_PATH
+
+Sun(R) Solaris(R) Operating System:
+-----------------------------------
+
+For both 32 bit and 64-bit installation assuming that the installation directory is "ExampleDir"
+
+1. To use the shared libraries, create the following symbolic links.
+
+        For 64 bit installation
+            cd ExampleDir/FW_1.3.1_Sol64/lib
+            
+        For 32 bit installation
+            cd ExampleDir/FW_1.3.1_Sol32/lib
+
+        ln -sf ./libfwBase.so.1.3.1 libfwBase.so.1
+        ln -sf ./libfwImage.so.1.3.1 libfwImage.so.1
+        ln -sf ./libfwJPEG.so.1.3.1 libfwJPEG.so.1
+        ln -sf ./libfwSignal.so.1.3.1 libfwSignal.so.1
+        ln -sf ./libfwVideo.so.1.3.1 libfwVideo.so.1
+
+        ln -sf ./libfwBase.so.1 libfwBase.so
+        ln -sf ./libfwImage.so.1 libfwImage.so
+        ln -sf ./libfwJPEG.so.1 libfwJPEG.so
+        ln -sf ./libfwSignal.so.1 libfwSignal.so
+        ln -sf ./libfwVideo.so.1 libfwVideo.so
+
+2. Compile a cpp file that uses FW (for example, test.cpp) as follows. 
+
+        To create 64 bit binaries:
+            CC -m64 -c -IExampleDir/FW_1.3.1_Sol64 test.cpp
+
+        To create 32 bit binaries:
+            CC -m32 -c -IExampleDir/FW_1.3.1_Sol32 test.cpp
+
+3. All FW libraries have dependency on fwBase. 
+
+        For example, link with the Image library as follows.
+
+        To link to 64 bit binaries:
+            CC -m64 -LExampleDir/FW_1.3.1_Sol64/lib test.o -lfwImage -lfwBase -lrt
+
+        To link to 32 bit binaries:
+            CC -m32 -LExampleDir/FW_1.3.1_Sol32/lib test.o -lfwImage -lfwBase -lrt
+
+
+4. It may be necessary to explicitly link in the stdc++, pthreads, 
+   or math libraries if they are not automatically linked in. 
+
+5. Before running the application, ensure the ExampleDir/FW_1.3.1_Sol64/lib (for 64 bit installation) or 
+   ExampleDir/FW_1.3.1_Sol32/lib (for 32 bit installation) is in the environment's shared library (LD_LIBRARY_PATH) search path.
+
+    The following example shows the correct bash shell command syntax.
+    
+        For 64 bit installation:   
+             $ export LD_LIBRARY_PATH=ExampleDir/FW_1.3.1_Sol64/lib:$LD_LIBRARY_PATH
+   
+        For 32 bit installation:   
+             $ export LD_LIBRARY_PATH=ExampleDir/FW_1.3.1_Sol32/lib:$LD_LIBRARY_PATH
+ 
+Apple(R) Mac OS(R) Operating System:
+------------------------------------
+
+For both 32-bit and 64-bit installation assuming that the installation directory is "ExampleDir"
+
+1. To use the shared libraries, create the following symbolic links.
+
+        For 64 bit installation
+            cd ExampleDir/FW_1.3.1_Mac64/lib
+            
+        For 32 bit installation
+            cd ExampleDir/FW_1.3.1_Mac32/lib
+
+        ln -sf ./libfwBase-1.3.1.dylib libfwBase.1.dylib
+        ln -sf ./libfwImage-1.3.1.dylib libfwImage.1.dylib
+        ln -sf ./libfwJPEG-1.3.1.dylib libfwJPEG.1.dylib
+        ln -sf ./libfwSignal-1.3.1.dylib libfwSignal.1.dylib
+        ln -sf ./libfwVideo-1.3.1.dylib libfwVideo.1.dylib
+
+        ln -sf ./libfwBase.1.dylib libfwBase.dylib
+        ln -sf ./libfwImage.1.dylib libfwImage.dylib
+        ln -sf ./libfwJPEG.1.dylib libfwJPEG.dylib
+        ln -sf ./libfwSignal.1.dylib libfwSignal.dylib
+        ln -sf ./libfwVideo.1.dylib libfwVideo.dylib
+
+2. Compile a cpp file that uses FW (for example, test.cpp) as follows. 
+
+        To create 64 bit binaries:
+            g++ -m64 -c -IExampleDir/FW_1.3.1_Mac64 test.cpp
+
+        To create 32 bit binaries:
+            g++ -m32 -c -IExampleDir/FW_1.3.1_Mac32 test.cpp
+
+3. All FW libraries have dependency on fwBase. 
+
+        For example, link with the Image library as follows.
+
+        To link to 64 bit binaries:
+            g++ -m64 -LExampleDir/FW_1.3.1_Mac64/lib test.o -lfwImage -lfwBase
+
+        To link to 32 bit binaries:
+            g++ -m32 -LExampleDir/FW_1.3.1_Mac32/lib test.o -lfwImage -lfwBase
+
+4. It may be necessary to explicitly link in the stdc++, pthreads, 
+   or math libraries if they are not automatically linked in. 
+
+5. Before running the application, make sure the ExampleDir/FW_1.3.1_Mac64/lib (for 64 bit installation) or 
+   ExampleDir/FW_1.3.1_Mac32/lib (for 32 bit installation) is in the environment's shared library (DYLD_LIBRARY_PATH) search path.
+
+   The following example shows the correct command syntax.
+   
+            For 64 bit installation:   
+                $ export DYLD_LIBRARY_PATH=ExampleDir/FW_1.3.1_Mac64/lib:$DYLD_LIBRARY_PATH
+   
+            For 32 bit installation:   
+                $ export DYLD_LIBRARY_PATH=ExampleDir/FW_1.3.1_Mac32/lib:$DYLD_LIBRARY_PATH
+
+
+
+=======================================================================================================
+Framewave is a trademark of The Framewave Group.
+Microsoft and Windows are registered trademarks of Microsoft Corporation.
+Sun and Solaris are registered trademarks of Sun Microsystems, Inc.
+Linux is a registered trademark of Linus Torvalds.
+Apple and Mac OS are registered trademarks of Apple, Inc.
+
+For Framewave licensing and code copyright information, see the LICENSE file in the same directory as this file.
+Framewave software is subject to the Apache v2.0 License.
