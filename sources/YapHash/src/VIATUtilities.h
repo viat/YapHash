@@ -11,12 +11,12 @@
 
 #include <string>
 #include <cmath>
-#include <boost/asio.hpp>
+//#include <boost/asio.hpp>
 #include "Array2d_32f.h"
 #include "Stft.h"
 #include "melFB.h"
 
-boost::system::error_code pushToSocket(boost::asio::ip::tcp::socket &socket, unsigned long *data, int len);
+//boost::system::error_code pushToSocket(boost::asio::ip::tcp::socket &socket, unsigned long *data, int len);
 
 int debugToCSV(std::string fileName, float *data, int len);
 

@@ -36,7 +36,6 @@
 #include "YapHash.h"
 #include "parseConfig.h"	// parse config file
 #include "VIATUtilities.h"	// some helper functions
-#include <boost/asio.hpp>
 
 
 
@@ -59,24 +58,15 @@ int main(int argc, const char * argv[]) {
 				stderr,
 				"usage: %s <config file> <input wave file> <output csv filename (optional)>\n",
 				argv[0]);
-		fprintf(stderr,
-				"file interface: <config file> <input wave file> -f <output csv filename>\n");
-		fprintf(stderr,
-				"socket interface: <config file> <input wave file> -s <Call ID> \n");
 		return -1;
 	}
     
-
-    
     try {
 		Parameter param = { 0 };
-		if(parseConfig(argv[1], &param))
-        {
+		if(parseConfig(argv[1], &param)){
             cout << "Config Error" << endl;
             return -1;
         }
-        
-
         
         // new audio object
         Audio *audio = new Audio(argv[2], param.vadThreshold, param.declickerThreshold, param.preEmphasizeFactor);
@@ -97,48 +87,14 @@ int main(int argc, const char * argv[]) {
         cout << (timeStamp2 - timeStamp1)/(2.4*1E9) << endl;
 #endif
         
-#define HEADER_SIZE 2
         
         // write to file
         int len = MIN(pHash->length(), param.maxHashLen); // a maximum of 100 hashvalues should be sufficient
         
-		if (argc > 4) {
-			if (!strcmp(argv[3], "-f")) {
-				writeIndexToCSV(argv[4], pHash->index, len); // write to csv with given name
-                cout << "Wrote Hash vecors to file " << argv[4] << endl;
-            }
-			else if (!strcmp(argv[3], "-s")) { // write to socket
-				
-                boost::asio::io_service ioService;
-                boost::asio::ip::tcp::endpoint server( boost::asio::ip::address::from_string(param.ipAddress)
-                                                      , param.port);
-                boost::asio::ip::tcp::socket socket(ioService);
-                socket.connect(server);
-                
-                cout << "Local endpoint:  " << socket.local_endpoint() << endl;
-                cout << "Remote endpoint " << socket.remote_endpoint() << endl;
-                
-				unsigned long *buf = NULL;
-				if (!(buf = (unsigned long*) malloc(HEADER_SIZE * sizeof(int) + len * (sizeof(int) + sizeof(int))))) {
-                    
-                    fprintf(stderr,
-							"ViatFeatureExtractor.cpp: <ERROR> buf:Memory allocation failed!\n");
-					return -1;
-				}
-				buf[0] = atoi(argv[4]); // Call ID
-				buf[1] = len; // length of payload / number of elements
-				cout << buf[0] << " " << buf[1] << endl;
-                
-				for (int i = 0; i < len; i++) {
-					buf[2 * i + HEADER_SIZE + 0] = pHash->index[2 * i + 0]; // position
-					buf[2 * i + HEADER_SIZE + 1] = pHash->index[2 * i + 1]; // hash
-				}
-				// push data
-                pushToSocket(socket, buf, HEADER_SIZE * sizeof(unsigned long) + len * (sizeof(unsigned long) + sizeof(unsigned long)));
-                socket.close();
-			}
-		} else
-			// write to csv with audio filename + .csv
+		if (argc > 3) {
+				writeIndexToCSV(argv[3], pHash->index, len); // write to csv with given name
+                cout << "Wrote Hash vecors to file " << argv[3] << endl;
+		} else // write to csv with audio filename + .csv
 			writeIndexToCSV(argv[2], pHash->index, len);
             
 		// free memory
@@ -149,7 +105,6 @@ int main(int argc, const char * argv[]) {
 		return -1;
 	}
     
-
     
 	return 0;
 }

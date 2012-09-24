@@ -12,14 +12,14 @@
 #include <fstream>
 #include <iostream>
 
-boost::system::error_code pushToSocket(boost::asio::ip::tcp::socket &socket, unsigned long *data, int len)
-{
-	// send data
-   	boost::system::error_code error;
-   	socket.write_some(boost::asio::buffer(data, len), error);
-
-   	return error;
-}
+//boost::system::error_code pushToSocket(boost::asio::ip::tcp::socket &socket, unsigned long *data, int len)
+//{
+//	// send data
+//   	boost::system::error_code error;
+//   	socket.write_some(boost::asio::buffer(data, len), error);
+//
+//   	return error;
+//}
 
 int getNoOfWindows(int wavLen, int windowSize, int stepSize)
 {
