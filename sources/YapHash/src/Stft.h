@@ -33,27 +33,67 @@ class Stft{
     
 public:
     
-    // Convenience constructor
-    Stft(const Audio& audio, int windowSize, int feedRate);
-    int calcStft(const Audio &audio, int windowSize, int feedRate);	// calc stft from audio file
+    /**
+     * Convenience constructor
+     * @param audio the audio object
+     * @param windowSize the size of the frames/windows in samples
+     * @param feedRate the step size of the frames in samples
+     */
+	Stft(const Audio& audio, int windowSize, int feedRate);
+    
+	/**
+	 * calc stft from audio file
+	 * @param audio the audio object
+	 * @param windowSize the size of the frames/windows in samples
+	 * @param feedRate the step size of the frames in samples
+	 * @return error
+	 */
+    int calcStft(const Audio &audio, int windowSize, int feedRate);
     
     // destructor
-    ~Stft(); 
+    ~Stft();
     
     Fw32f **spectrogramm;  // Short time fourier transformation
     int fftLen;
-    int NoOfWindows; 
+    int NoOfWindows;
     
 private:
-	//IppStatus status;
+    
 };
 
-
+/**
+ * Applies a Hamming window of given length, inplace operation!
+ * @param data input overwritten by output data
+ * @param length of window
+ */
 void WinHamming_I(double* data, int length);
+
+/**
+ * combine some functions for convenience and speedup
+ * @param inAudio audio samples as 32 bit float	to be multriplied with hamming window
+ * @param windowedAudio windowed audio samples
+ * @param fftLen length of fft (next power of 2)
+ * @param windowSize size of window
+ */
 void CopyWithHamming(float *inAudio, double* windowedAudio, int fftLen, int windowSize);
+
+/**
+ * combine some functions for convenience and speedup
+ * @param inAudio
+ * @param windowedAudio
+ * @param hamming
+ * @param fftLen
+ * @param windowSize
+ */
 void CopyConvertAndMultiply(float *inAudio, double* windowedAudio, double* hamming, int fftLen, int windowSize);
+
+/**
+ * calculate power spectrum from spectrum
+ * @param power_spectrum
+ * @param spectrum
+ * @param N size of full spectrum
+ */
 void PowerSpectrum(Fw32f* power_spectrum, fftw_complex* spectrum, int N);
 
 
 #endif
-
