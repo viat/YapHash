@@ -1,18 +1,28 @@
 /**
- *  Wave.c
- *  VIAT Feature-Extraction Framework
+ * @file		Wave.cpp
+ * @date		Sep 08, 2010
+ * @author  	Gary Grutzek
+ * @brief		Wave file reader and writer
+ * @details		supports only well-formated mono PCM Wave files no tagging,
+ * 				just plain 44-Byte header!
  *
- *	read and write wavefiles
+ *				08.09.10. start from scratch
+ *   			29.07.11  support for a few subchunks before 'data' subchunk
+ *   			01.08.11  fix: reads subchunk1size correctly
  *
- *   08.09.10. start from scratch. supports only well-formated mono PCM Wave files
- *			  no tagging, just plain 44-Byte header!
- *                
- *   29.07.11  support for a few subchunks before 'data' subchunk
- *   01.08.11  fix: reads subchunk1size correctly
- *
- *   Created by Gary Grutzek on 08.09.10.
- *   Copyright 2010 Fachhochschule Koeln. All rights reserved.
- *
+ * @copyright  	Copyright (c) 2012 Gary Grutzek<br>
+ * 				Cologne University of Applied Sciences<br>
+ * 				<br>
+ * 				This program is free software: you can redistribute it and/or modify
+ *				it under the terms of the GNU General Public License as published by
+ *				the Free Software Foundation, either version 3 of the License, or
+ * 				(at your option) any later version.<br>
+ *				This program is distributed in the hope that it will be useful,
+ *				but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *				MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *				GNU General Public License for more details.<br>
+ *				You should have received a copy of the GNU General Public License
+ *				along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 #include "Wave.h"
