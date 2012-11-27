@@ -7,8 +7,8 @@
 
 #include "Stwt.h"
 
-Stwt::Stwt(const Audio& rAudio, int WindowSize, int FeedRate) :
-		mSpectrogramm(NULL), mFwtLen(0), mNoOfWindows(0), mJ(5), mNm("db4")
+Stwt::Stwt(const Audio& rAudio, int WindowSize, int FeedRate, int J, std::string nm) :
+		mSpectrogramm(NULL), mFwtLen(0), mNoOfWindows(0), mJ(J), mNm(nm)
 {
 	this->CalcStwt(rAudio, WindowSize, FeedRate);
 }

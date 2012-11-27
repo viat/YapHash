@@ -9,11 +9,9 @@
 
 using namespace std;
 
-#define BIT_DEPTH 5
-
 // convenience constructor
 WaveLash::WaveLash(const Audio& rAudio, Parameter* pParam) :
-		index(0), mIndexLen(0)
+		index(0), mIndexLen(0), mFactor(pParam->factor), mStep((int)pow(2.0,(double)(pParam->factor - 1)))
 {
 	mHashLen = (unsigned int) getNoOfWindows(rAudio.length(), pParam->windowSize, pParam->stepSize) - 1;
 	mHash = (unsigned long*) malloc(sizeof(unsigned long) * mHashLen);
@@ -30,7 +28,7 @@ WaveLash::~WaveLash()
 void WaveLash::CalcHash(const Audio& rAudio, Parameter* pParam)
 {
 	// calc stwt
-	Stwt stwt = Stwt(rAudio, pParam->windowSize, pParam->stepSize);
+	Stwt stwt = Stwt(rAudio, pParam->windowSize, pParam->stepSize, pParam->J, pParam->nm);
 
 	if (pParam->debugLevel > 2)
 	{
@@ -39,23 +37,23 @@ void WaveLash::CalcHash(const Audio& rAudio, Parameter* pParam)
 	}
 
 	// get energy of windows
-	float *e = (float *) malloc(stwt.mNoOfWindows * sizeof(float));
+	float *e = (float *) calloc(stwt.mNoOfWindows, sizeof(float));
 
 	EnergyInWindows(e, rAudio.samples(), rAudio.length(), pParam->windowSize, pParam->stepSize);
 
 	Fw32f** variance = new Fw32f *[stwt.mNoOfWindows];
 	for (int i = 0; i < stwt.mNoOfWindows; i++)
-		variance[i] = new Fw32f[BIT_DEPTH + 1];
+		variance[i] = new Fw32f[mStep * (stwt.mJ + 1)];
 
 	CalculateVariance(&variance, stwt);
 
 	bool** F = (bool**) calloc(stwt.mNoOfWindows - 1, sizeof(bool*));
 	for (int i = 0; i < stwt.mNoOfWindows - 1; i++)
-		F[i] = (bool*) calloc(stwt.mJ, sizeof(bool));
+		F[i] = (bool*) calloc(mStep * (stwt.mJ), sizeof(bool));
 
 	for (int i = 0; i < stwt.mNoOfWindows - 1; i++)
 	{
-		for (int j = 0; j < stwt.mJ; j++)
+		for (int j = 0; j < mStep * (stwt.mJ); j++)
 		{
 			if (variance[i][j] - variance[i][j + 1] - (variance[i + 1][j] - variance[i + 1][j + 1]) > 0)
 				F[i][j] = 1;
@@ -87,14 +85,24 @@ void WaveLash::CalcHash(const Audio& rAudio, Parameter* pParam)
 		{
 			a = 0;
 
-			for (int j = 0; j < stwt.mJ; j++)
-				a |= F[i][j] << (stwt.mJ - j - 1);
+			for (int j = 0; j < mStep * (stwt.mJ); j++)
+				a |= (unsigned long)F[i][j] << (mStep * (stwt.mJ) - j - 1);
 
 			index[2 * k + 0] = i + 1; // position
 			index[2 * k + 1] = a;// value
 			k++;
 		}
 	}
+
+//	ofstream ofs("F.csv", ofstream::app);
+//	for (int i = 0; i < stwt.mNoOfWindows - 1; i++)
+//	{
+//		for (int j = 0; j < STEP * (stwt.mJ + 1); j++)
+//		{
+//			ofs << F[i][j] << ", ";
+//		}
+//		ofs << endl;
+//	}
 
 	mIndexLen = k;
 
@@ -112,6 +120,8 @@ void WaveLash::CalculateVariance(Fw32f ***result, Stwt &stwt)
 {
 	int NumCoeff = 0;
 
+	int c = 0;
+
 	int k1 = 0; // counter for mean value
 	int k2 = 0; // counter for variance
 
@@ -120,10 +130,12 @@ void WaveLash::CalculateVariance(Fw32f ***result, Stwt &stwt)
 
 	for (int h = 0; h < stwt.mNoOfWindows; h++)
 	{
+		c = 0;
+
 		k1 = 0;
 		k2 = 0;
 
-		for (int i = 0; i < stwt.mJ + 1; i++)
+		for (int i = 0; i <  mStep * (stwt.mJ + 1); i++)
 		{
 			mean = 0.0;
 			temp = 0.0;
@@ -131,10 +143,17 @@ void WaveLash::CalculateVariance(Fw32f ***result, Stwt &stwt)
 			// first two layer have the same size, e.g. 4096 coefficients
 			// result with 5-levels transform in layer sizes:
 			// 128, 128, 256, 512, 1024, 2048
-			if (i <= 1)
-				NumCoeff = (int)(stwt.mFwtLen / pow(2.0,(double)(stwt.mJ)));
+			if (i < (int)pow(2.0,(double)(mFactor)))
+			{
+				NumCoeff = (int)(stwt.mFwtLen / pow(2.0,(double)(stwt.mJ)) / mStep);
+			}
 			else
-				NumCoeff = (int)(stwt.mFwtLen / pow(2.0,(double)(stwt.mJ - i + 1)));
+			{
+				if (!(i % mStep))
+					c++;
+
+				NumCoeff = (int)(stwt.mFwtLen / pow(2.0,(double)(stwt.mJ - c)) / mStep);
+			}
 
 			// mean value
 			for (int j = 0; j < NumCoeff; j++)
@@ -154,7 +173,7 @@ void WaveLash::CalculateVariance(Fw32f ***result, Stwt &stwt)
 
 			(*result)[h][i] = temp;
 
-//			cout << NumCoeff << ", " << k2 << endl;
+//			cout << i << ": " << NumCoeff << ", " << k2 << endl;
 		}
 //		exit(0);
 	}

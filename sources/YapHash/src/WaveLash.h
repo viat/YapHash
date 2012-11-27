@@ -44,6 +44,9 @@ class WaveLash
 		unsigned int mIndexLen;
 		unsigned long* mHash;
 
+		int mFactor;
+		int mStep;
+
 		void CalcHash(const Audio& rAudio, Parameter* pParam);
 		void CalculateVariance(Fw32f ***result, Stwt &stwt);
 };

@@ -24,7 +24,7 @@ class Stwt
 {
 	public:
 	    // Convenience constructor
-		Stwt(const Audio& rAudio, int WindowSize, int FeedRate);
+		Stwt(const Audio& rAudio, int WindowSize, int FeedRate, int J, std::string nm);
 	    ~Stwt();
 
 	    Fw32f** mSpectrogramm;  // short time wavelet transformation
