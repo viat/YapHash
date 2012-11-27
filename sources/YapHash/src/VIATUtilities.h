@@ -29,6 +29,7 @@
 //#include <boost/asio.hpp>
 #include "Array2d_32f.h"
 #include "Stft.h"
+#include "Stwt.h"
 #include "melFB.h"
 
 /**
@@ -75,6 +76,14 @@ int debug2DToCSV(std::string fileName, Array2d_32f *matrix , int x, int y);
  * @return
  */
 int debugStftToCSV(std::string fileName, Stft *stft);
+
+/**
+ * debugging: write wavelet coefficients to csv
+ * @param fileName
+ * @param stft
+ * @return
+ */
+int debugStwtToCSV(std::string fileName, Stwt *stwt);
 
 /**
  *	returns length of fft aka next power of 2

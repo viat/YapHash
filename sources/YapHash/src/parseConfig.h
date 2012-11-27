@@ -45,7 +45,6 @@ typedef struct Parameter{
     int mfccCoeffs;
     int melCoeffs;
     int debugLevel;
-    
 }Parameter;
 
 /**

@@ -157,6 +157,27 @@ int debugStftToCSV(std::string fileName, Stft *stft)
     return 0;    
 }
 
+int debugStwtToCSV(std::string fileName, Stwt *stwt)
+{
+
+	std::ofstream csvFile;
+    csvFile.open(fileName.c_str());
+
+    // write data
+    int i, j ;
+    for (j = 0; j < stwt->mFwtLen; j++)
+    {
+        for (i = 0; i < stwt->mNoOfWindows; i++)
+        {
+            csvFile << stwt->mSpectrogramm[i][j] << ",";
+        }
+        csvFile << std::endl;
+    }
+    csvFile.close();
+
+    return 0;
+}
+
 int debugFbToCSV(std::string fileName, MelFb *bank)
 {
     
