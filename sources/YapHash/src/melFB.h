@@ -26,6 +26,7 @@
 #define _MEL_FB_H_
 
 #include "Stft.h"
+#include "Stwt.h"
 
 class MelFb{
     
@@ -57,7 +58,7 @@ public:
 	 * @param stft input object, the spectrogram and its length
 	 */
 	void applyMelFB(Fw32f **output, const Stft& stft);
-    
+
 	// TODO: getter methoden
 	Fw32f **fbank;
     

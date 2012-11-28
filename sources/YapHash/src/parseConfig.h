@@ -47,7 +47,7 @@ typedef struct Parameter{
     int debugLevel;
     int J;					// J-Level wavelet transform
     std::string nm;			// Name of wavelet, e.g. db4
-    int factor;				// Bit-length: 2^(factor - 1) * J
+    int factor;				// Bit-length: 2^(FACTOR - 1) * (J + 1) - 1
 }Parameter;
 
 /**

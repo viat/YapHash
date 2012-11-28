@@ -213,7 +213,7 @@ void YapHash::calcHash(const Audio& audio, MelFb melBank, Parameter *param)
             stftHash[k] = bin2Dec(&dStft.data[i][0], stftCoeffs-2); 
             // cout << stftHash[k] << endl;
             // compose hash from mfccc and stft derivates
-            hash[k] = (mfcHash[k] << stftCoeffs-1) + stftHash[k] + 1;
+            hash[k] = (mfcHash[k] << (stftCoeffs-1)) + stftHash[k] + 1;
             index[2*k] = i+1; // position
             index[2*k+1] = hash[k];
             k++;

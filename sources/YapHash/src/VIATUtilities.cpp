@@ -165,16 +165,15 @@ int debugStwtToCSV(std::string fileName, Stwt *stwt)
 
     // write data
     int i, j ;
-    for (j = 0; j < stwt->mFwtLen; j++)
+    for (i = 0; i < stwt->mNoOfWindows; i++)
     {
-        for (i = 0; i < stwt->mNoOfWindows; i++)
-        {
+    	for (j = 0; j < stwt->mFwtLen; j++)
+    	{
             csvFile << stwt->mSpectrogramm[i][j] << ",";
         }
         csvFile << std::endl;
     }
     csvFile.close();
-
     return 0;
 }
 

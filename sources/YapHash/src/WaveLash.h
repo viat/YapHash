@@ -27,27 +27,54 @@
 
 #include <iostream>
 
+/**
+ * Wavelet Hash.
+ */
 class WaveLash
 {
 	public:
+		/**
+		 *
+		 * @param rAudio
+		 * @param pParam
+		 */
 		WaveLash(const Audio& rAudio, Parameter* pParam);
+		/**
+		 *
+		 */
 		~WaveLash();
-
+		///
 		unsigned long* index;
+		/**
+		 *
+		 * @return
+		 */
 		unsigned int length() const
 		{
 			return mIndexLen;
 		}
-
 	private:
+		///
 		unsigned int mHashLen;
+		///
 		unsigned int mIndexLen;
+		///
 		unsigned long* mHash;
-
+		///
 		int mFactor;
+		///
 		int mStep;
-
+		/**
+		 *
+		 * @param rAudio
+		 * @param pParam
+		 */
 		void CalcHash(const Audio& rAudio, Parameter* pParam);
+		/**
+		 *
+		 * @param result
+		 * @param stwt
+		 */
 		void CalculateVariance(Fw32f ***result, Stwt &stwt);
 };
 

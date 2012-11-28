@@ -185,7 +185,6 @@ void MelFb::applyMelFB(Fw32f **output, const Stft& stft)
     //        throw "applyMelFB failed";
 }
 
-
 #pragma mark helper functions
 
 Fw32f MelFb::linToMel(Fw32f linFreq)

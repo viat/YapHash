@@ -80,7 +80,7 @@ int debugStftToCSV(std::string fileName, Stft *stft);
 /**
  * debugging: write wavelet coefficients to csv
  * @param fileName
- * @param stft
+ * @param stwt
  * @return
  */
 int debugStwtToCSV(std::string fileName, Stwt *stwt);
