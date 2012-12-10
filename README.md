@@ -15,6 +15,14 @@ Different recordings with similar content, e.g. identical words or phrases, or f
 The YapHash fingerprint is based on the spectrogram and Mel-frequency-cepstrum-coefficients (MFCC). 
 The sign of the differences in between the frequency bands and the MFCCs form a compact yet robust audio hash.
 
+###WaveLash - Wavelet Audio Hashing
+
+WaveLash is an addon to YapHash. Instead of using FFT and MFCCs, a J-level wavelet transform with a specific wavelet is performed.
+A major part of the hash is created by calculating the differences of the variances and one bit by calculating the zero crossing rate.
+The resulting bit lengths of the hash values is configurable (see below).
+
+To use WaveLash, uncomment the line _#define WAVELASH_ in _main.cpp_ and compile the source code.
+
 ###Usage
 
 YapHash is currently a command line tool and expects at least two arguments; 
