@@ -39,9 +39,8 @@
 #include "VIATUtilities.h"	// some helper functions
 using namespace std;
 
-#define MIN(X,Y) ((X) < (Y) ? (X) : (Y))
-
 //#define WAVELASH
+#define MIN(X,Y) ((X) < (Y) ? (X) : (Y))
 
 /**
  * Entry point.
@@ -78,8 +77,11 @@ int main(int argc, char *argv[])
 		if (param.debugLevel > 0)
 			timeStamp1 = fwGetCpuClocks();
 
-		// calculate the hashvalues
+// calculate the hashvalues
 #ifdef WAVELASH
+		if (melBank)
+			delete melBank;
+
 		WaveLash *pHash = new WaveLash(*audio, &param);
 #else
 		YapHash *pHash = new YapHash(*audio, *melBank, &param);

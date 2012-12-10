@@ -7,10 +7,12 @@
 
 #include "Stwt.h"
 
+
+// directly from gsl
 #define ELEMENT(a,stride,i) ((a)[(stride)*(i)])
 
-Stwt::Stwt(const Audio& rAudio, int WindowSize, int FeedRate, int J, std::string nm) :
-		mSpectrogramm(NULL), mFwtLen(0), mNoOfWindows(0), mJ(J), mNm(nm)
+Stwt::Stwt(const Audio& rAudio, int WindowSize, int FeedRate, int J, std::string nm, size_t member) :
+		mSpectrogramm(NULL), mFwtLen(0), mNoOfWindows(0), mJ(J), mNm(nm), mMember(member)
 {
 	this->CalcStwt(rAudio, WindowSize, FeedRate);
 }
@@ -53,7 +55,20 @@ int Stwt::CalcStwt(const Audio& rAudio, int WindowSize, int FeedRate)
 	gsl_wavelet *w;
 	gsl_wavelet_workspace *work;
 
-	w = gsl_wavelet_alloc(gsl_wavelet_daubechies, 8);
+	const gsl_wavelet_type *nm;
+	if (mNm.compare(std::string("gsl_wavelet_daubechies")) == 0)
+		nm = gsl_wavelet_daubechies;
+	else if (mNm.compare(std::string("gsl_wavelet_haar")) == 0)
+		nm = gsl_wavelet_haar;
+	else if (mNm.compare(std::string("gsl_wavelet_bspline")) == 0)
+		nm = gsl_wavelet_bspline;
+	else
+	{
+		std::cerr << "<ERROR> wavelet name not found!" << std::endl;
+		exit(-1);
+	}
+
+	w = gsl_wavelet_alloc(nm, mMember);
 	work = gsl_wavelet_workspace_alloc(mFwtLen);
 
 	// calc fwt for each window
@@ -64,7 +79,6 @@ int Stwt::CalcStwt(const Audio& rAudio, int WindowSize, int FeedRate)
 		for (int z = mFwtLen; z >= mFwtLen/(int)pow(2.0,(double)(mJ - 1)); z >>= 1)
 			dwt_step(w, FrameBuffer, 1, z, gsl_wavelet_forward, work);
 
-		// ToDo: memcpy
 		for (int a = 0; a < mFwtLen; a++)
 			mSpectrogramm[j][a] = (Fw32f) FrameBuffer[a];
 	}
@@ -90,6 +104,9 @@ void Stwt::CopyConvertAndMultiply(float* pInAudio, double* pWindowedAudio, doubl
 	}
 }
 
+// one step dwt from gnu scientifc library. you can't use this function directly from their library.
+// they have a function, which makes as many dwt_steps as possible (e.g. N = 4096 -> J = 12 = ceil(logf(WindowSize) / logf(2.0f)))
+// we want to decide ourselves how many step (resp. level) we make
 void Stwt::dwt_step(const gsl_wavelet * w, double *a, size_t stride, size_t n, gsl_wavelet_direction dir, gsl_wavelet_workspace * work)
 {
 	double ai, ai1;

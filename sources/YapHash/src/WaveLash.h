@@ -73,32 +73,40 @@ class WaveLash
 			return mIndexLen;
 		}
 	private:
-		///
-		unsigned int mHashLen;
-		///
+		/// Hash length.
 		unsigned int mIndexLen;
-		///
-		unsigned long* mHash;
-		///
+		/// Factor of your choice to vary the bit length.
+		/// J = 1: 2^{factor}, otherwise: 2^{factor - 1} * (J + 1).
 		int mFactor;
-		///
+		/// Stepping for levels: 2^{factor - 1}.
 		int mStep;
 		/**
-		 *
-		 * @param rAudio
-		 * @param pParam
+		 * Calculate the Hash.
+		 * @param rAudio audio material.
+		 * @param pParam parameter from configuration file.
 		 */
 		void CalcHash(const Audio& rAudio, Parameter* pParam);
 		/**
-		 *
-		 * @param result
-		 * @param stwt
+		 * Calculate the variances per frame and level.
+		 * Variance for each frame $m$:\\
+		 * Let $w[m,k]$ be the $k$-th wavelet coefficient in the $m$-th frame, then we define the variance in an interval $[k_{1},k_{2}[$ as:
+		 * \begin{align}
+		 * Var[m,k_{1},k_{2}]:=\frac{1}{k_{2}-k_{1}}\sum\limits_{k=k_{1}}^{k_{2}-1}(w[m,k] - \overline{w})^{2}\text{, with } k_{2}>k_{1}
+		 * \end{align}
+		 * where $\overline{w}=\frac{1}{M\cdot N}\sum\limits_{m=0}^{M-1}\sum\limits_{n=0}^{N-1} w[m,n]$ is the mean value over all wavelet coefficients $n$ in all frames $m$.
+		 * @param result 2D array: result[NoOfWindows, HashLength].
+		 * @param stwt the wavelet coefficients per frame.
 		 */
 		void CalculateVariance(Fw32f ***result, Stwt &stwt);
 		/**
-		 *
-		 * @param result
-		 * @param stwt
+		 * Calculate the zero crossing rate per frame.
+		 * Zero Crossing Rate for each frame $m$:\\
+		 * Let $w[m,k]$ be the $k$-th wavelet coefficient in the $m$-th frame, then we define the zero crossing rate as:
+		 * \begin{align}
+		 * zcr[m,K]:=\frac{1}{K}\sum\limits_{k=1}^{K-1}|sign(w[m,k])-sign(w[m,k - 1])|
+		 * \end{align}
+		 * @param result 1D array: result[NoOfWindows]
+		 * @param stwt the wavelet coefficients per frame.
 		 */
 		void CalculateZeroCrossingRate(Fw32f **result, Stwt &stwt);
 };

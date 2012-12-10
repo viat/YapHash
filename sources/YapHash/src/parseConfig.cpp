@@ -106,11 +106,14 @@ int parseConfig(const char *configfile, Parameter *pParam) {
 		else if (strcmp(optionname, "NUMBER_OF_MFCC") == 0)
 			pParam->mfccCoeffs = (unsigned int) atoi(optionvalue);
 
-		else if (strcmp(optionname, "J") == 0)
-			pParam->J = (unsigned int) atoi(optionvalue);
-
 		else if (strcmp(optionname, "NM") == 0)
 			pParam->nm = std::string(optionvalue);
+
+		else if (strcmp(optionname, "MEMBER") == 0)
+			pParam->member = (size_t) atoi(optionvalue);
+
+		else if (strcmp(optionname, "J") == 0)
+			pParam->J = (unsigned int) atoi(optionvalue);
 
 		else if (strcmp(optionname, "FACTOR") == 0)
 			pParam->factor = (unsigned int) atoi(optionvalue);
@@ -122,7 +125,7 @@ int parseConfig(const char *configfile, Parameter *pParam) {
     if (!( pParam->windowSize && pParam->stepSize && pParam->declickerThreshold
           && pParam->energyThreshold && pParam->hiCut  && pParam->loCut && pParam->maxAudioLen 
           && pParam->maxHashLen && pParam->melCoeffs && pParam->mfccCoeffs && pParam->minAudioLen 
-          && pParam->samplerate && pParam->vadThreshold && pParam->J && pParam->factor))
+          && pParam->samplerate && pParam->vadThreshold && pParam->member>0 && pParam->J && pParam->factor))
 		return CONFIG_ERROR;
 
     // TODO: check for missing options

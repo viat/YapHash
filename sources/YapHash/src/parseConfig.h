@@ -45,8 +45,9 @@ typedef struct Parameter{
     int mfccCoeffs;
     int melCoeffs;
     int debugLevel;
+    std::string nm;			// Name of wavelet
+    size_t member;			// Specific member of the wavelet family
     int J;					// J-Level wavelet transform
-    std::string nm;			// Name of wavelet, e.g. db4
     int factor;
 }Parameter;
 

@@ -12,9 +12,6 @@ using namespace std;
 WaveLash::WaveLash(const Audio& rAudio, Parameter* pParam) :
 		index(0), mIndexLen(0), mFactor(pParam->factor), mStep((int)pow(2.0,(double)(pParam->factor - 1)))
 {
-	mHashLen = (unsigned int) getNoOfWindows(rAudio.length(), pParam->windowSize, pParam->stepSize) - 1;
-	mHash = (unsigned long*) malloc(sizeof(unsigned long) * mHashLen);
-
 	this->CalcHash(rAudio, pParam);
 }
 
@@ -29,7 +26,7 @@ void WaveLash::CalcHash(const Audio& rAudio, Parameter* pParam)
 	int HashBitLength = 0;
 
 	// calc stwt
-	Stwt stwt = Stwt(rAudio, pParam->windowSize, pParam->stepSize, pParam->J, pParam->nm);
+	Stwt stwt = Stwt(rAudio, pParam->windowSize, pParam->stepSize, pParam->J, pParam->nm, pParam->member);
 
 	if (pParam->debugLevel > 2)
 	{
