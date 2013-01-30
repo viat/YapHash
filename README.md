@@ -30,25 +30,35 @@ git clone https://github.com/viat/YapHash
 (resp. git pull)
 
 
-##Linux Installation 
+###Linux Installation 
 (tested on 2.6.32-5-amd64 x86_64 Debian GNU/Linux 6.0)
 
 cd fftw-3.3.2
+
 CFLAG="-fPIC"
+
 export CFLAG
+
 configure --enable-shared
+
 make
+
 sudo make install
 
 cd ../gsl-1.9
+
 ./configure
+
 make
+
 sudo make install
 
 cd ../sources/Match
+
 make
 
 cd ../YapHash
+
 make
 
 cd ../..
@@ -59,17 +69,25 @@ The executables in the main project directory are YapHash and Match.
 (tested on OS X 10.8.2)
 
 cd fftw-3.3.2
+
 configure --enable-shared
+
 make
+
 sudo make install
 
 cd ../gsl-1.9
+
 ./configure
+
 make
+
 sudo make install
 
 cd ../sources/Match
+
 make
+
 cd ../..
 
 Use Xcode and the attached project to build YapHash.
@@ -81,7 +99,9 @@ You find the YapHash executable in a directory specified by Xcode.
 
 ###Usage
 Set the Library Path (necessary only for Linux):
+
 LD_LIBRARY_PATH=/usr/local/lib:./FW_1.3.1_Lin64/lib
+
 export LD_LIBRARY_PATH
 
 YapHash is a command line tool and expects at least two arguments; 
