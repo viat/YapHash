@@ -19,6 +19,10 @@
 		4EE235401610638C003E75C7 /* YapHash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4EE235351610638C003E75C7 /* YapHash.cpp */; };
 		4EE235481610646F003E75C7 /* libfwBase-1.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EE235461610646F003E75C7 /* libfwBase-1.3.1.dylib */; };
 		4EE235491610646F003E75C7 /* libfwSignal-1.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4EE235471610646F003E75C7 /* libfwSignal-1.3.1.dylib */; };
+		6271F57716B9817100D46945 /* WaveLash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6271F57616B9817100D46945 /* WaveLash.cpp */; };
+		6271F57B16B9831D00D46945 /* Stwt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6271F57816B9831D00D46945 /* Stwt.cpp */; };
+		62CA61D116B95FD20002F4AE /* libfwBase.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 62CA61D016B95FD20002F4AE /* libfwBase.dylib */; };
+		62CA61D316B95FDD0002F4AE /* libfwSignal-1.3.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 62CA61D216B95FDD0002F4AE /* libfwSignal-1.3.1.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -58,6 +62,12 @@
 		4EE235361610638C003E75C7 /* YapHash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = YapHash.h; path = sources/YapHash/src/YapHash.h; sourceTree = SOURCE_ROOT; };
 		4EE235461610646F003E75C7 /* libfwBase-1.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libfwBase-1.3.1.dylib"; path = "FW_1.3.1_OsX/lib/libfwBase-1.3.1.dylib"; sourceTree = "<group>"; };
 		4EE235471610646F003E75C7 /* libfwSignal-1.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libfwSignal-1.3.1.dylib"; path = "FW_1.3.1_OsX/lib/libfwSignal-1.3.1.dylib"; sourceTree = "<group>"; };
+		6271F57616B9817100D46945 /* WaveLash.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WaveLash.cpp; path = sources/YapHash/src/WaveLash.cpp; sourceTree = SOURCE_ROOT; };
+		6271F57816B9831D00D46945 /* Stwt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Stwt.cpp; path = sources/YapHash/src/Stwt.cpp; sourceTree = SOURCE_ROOT; };
+		6271F57916B9831D00D46945 /* Stwt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Stwt.h; path = sources/YapHash/src/Stwt.h; sourceTree = SOURCE_ROOT; };
+		6271F57A16B9831D00D46945 /* WaveLash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WaveLash.h; path = sources/YapHash/src/WaveLash.h; sourceTree = SOURCE_ROOT; };
+		62CA61D016B95FD20002F4AE /* libfwBase.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfwBase.dylib; path = FW_1.3.1_OsX/lib/libfwBase.dylib; sourceTree = "<group>"; };
+		62CA61D216B95FDD0002F4AE /* libfwSignal-1.3.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libfwSignal-1.3.1.dylib"; path = "FW_1.3.1_OsX/lib/libfwSignal-1.3.1.dylib"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +77,8 @@
 			files = (
 				4EE235481610646F003E75C7 /* libfwBase-1.3.1.dylib in Frameworks */,
 				4EE235491610646F003E75C7 /* libfwSignal-1.3.1.dylib in Frameworks */,
+				62CA61D116B95FD20002F4AE /* libfwBase.dylib in Frameworks */,
+				62CA61D316B95FDD0002F4AE /* libfwSignal-1.3.1.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +88,8 @@
 		4EE235061610633F003E75C7 = {
 			isa = PBXGroup;
 			children = (
+				62CA61D216B95FDD0002F4AE /* libfwSignal-1.3.1.dylib */,
+				62CA61D016B95FD20002F4AE /* libfwBase.dylib */,
 				4EE235461610646F003E75C7 /* libfwBase-1.3.1.dylib */,
 				4EE235471610646F003E75C7 /* libfwSignal-1.3.1.dylib */,
 				4EE2351416106340003E75C7 /* YapHash */,
@@ -94,6 +108,10 @@
 		4EE2351416106340003E75C7 /* YapHash */ = {
 			isa = PBXGroup;
 			children = (
+				6271F57816B9831D00D46945 /* Stwt.cpp */,
+				6271F57916B9831D00D46945 /* Stwt.h */,
+				6271F57A16B9831D00D46945 /* WaveLash.h */,
+				6271F57616B9817100D46945 /* WaveLash.cpp */,
 				4EE235221610638C003E75C7 /* Array2d_32f.cpp */,
 				4EE235231610638C003E75C7 /* Array2d_32f.h */,
 				4EE235241610638C003E75C7 /* Audio.cpp */,
@@ -146,7 +164,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0430;
-				ORGANIZATIONNAME = "Ingenieurbüro Grutzek";
+				ORGANIZATIONNAME = "viat.fh-koeln.de";
 			};
 			buildConfigurationList = 4EE2350B1610633F003E75C7 /* Build configuration list for PBXProject "YapHash" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -180,6 +198,8 @@
 				4EE2353E1610638C003E75C7 /* VIATUtilities.cpp in Sources */,
 				4EE2353F1610638C003E75C7 /* Wave.cpp in Sources */,
 				4EE235401610638C003E75C7 /* YapHash.cpp in Sources */,
+				6271F57716B9817100D46945 /* WaveLash.cpp in Sources */,
+				6271F57B16B9831D00D46945 /* Stwt.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -207,9 +227,12 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "-lfftw3";
+				OTHER_LDFLAGS = (
+					"-lfftw3",
+					"-lgsl",
+				);
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -229,8 +252,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				LIBRARY_SEARCH_PATHS = /usr/local/lib;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
-				OTHER_LDFLAGS = "-lfftw3";
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OTHER_LDFLAGS = (
+					"-lfftw3",
+					"-lgsl",
+				);
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -240,13 +266,19 @@
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					/usr/local/include,
-					./FW_1.3.1_OsX,
+					"${SRCROOT}/FW_1.3.1_OsX",
+					/opt/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/FW_1.3.1_OsX/lib\"",
+					/opt/local/lib,
+					"${SRCROOT}/FW_1.3.1_OsX/lib",
+					"\"$(SRCROOT)\"",
 				);
-				OTHER_LDFLAGS = "-lfftw3";
+				OTHER_LDFLAGS = (
+					"-lfftw3",
+					"-lgsl",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -256,13 +288,19 @@
 			buildSettings = {
 				HEADER_SEARCH_PATHS = (
 					/usr/local/include,
-					./FW_1.3.1_OsX,
+					"${SRCROOT}/FW_1.3.1_OsX",
+					/opt/local/include,
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/FW_1.3.1_OsX/lib\"",
+					/opt/local/lib,
+					"${SRCROOT}/FW_1.3.1_OsX/lib",
+					"\"$(SRCROOT)\"",
 				);
-				OTHER_LDFLAGS = "-lfftw3";
+				OTHER_LDFLAGS = (
+					"-lfftw3",
+					"-lgsl",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
