@@ -1,11 +1,10 @@
 //
-//  main.cpp
-//  Match
-//
-//  Created by Heiko Knospe on 16.06.12.
-//  Copyright (c) 2012 VIAT. All rights reserved.
-//
-/* Cologne University of Applied Sciences
+//  @file main.cpp
+//  @date June 16, 2012 
+//  @brief Match - Compares two Fingerprints
+//  @author Heiko Knospe
+//  @copyright Copyright (c) 2012 Heiko Knospe <br>
+/*  Cologne University of Applied Sciences
 
 
 This program is free software: you can redistribute it and/or modify
