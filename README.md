@@ -18,7 +18,7 @@ Grutzek, G., Strobl, J., Mainka, B., Kurth, F., Pörschmann, C., Knospe, H. (201
 
 ###WaveLash - Wavelet Audio Hashing
 
-WaveLash is an experimental add-on to YapHash. Instead of using FFT and MFCCs, a J-level Wavelet transform with a specific wavelet is performed.
+WaveLash is an experimental add-on to YapHash. Instead of using FFT and MFCCs, a J-level *Wavelet* transform with a specific wavelet is performed.
 A major part of the hash is created by calculating the differences of the variances and one bit by calculating the zero crossing rate.
 The bit length of the hash values is configurable.
 
@@ -33,66 +33,50 @@ git clone https://github.com/viat/YapHash
 ###Linux Installation 
 (tested on 2.6.32-5-amd64 x86_64 Debian GNU/Linux 6.0)
 
-cd fftw-3.3.2
+FFTW:
+	cd fftw-3.3.2
+	CFLAG="-fPIC"
+	export CFLAG
+	configure --enable-shared
+	make
+	sudo make install
 
-CFLAG="-fPIC"
+GSL:
+	cd ../gsl-1.9
+	./configure
+	make
+	sudo make install
 
-export CFLAG
+Match:
+	cd ../sources/Match
+	make
 
-configure --enable-shared
-
-make
-
-sudo make install
-
-cd ../gsl-1.9
-
-./configure
-
-make
-
-sudo make install
-
-cd ../sources/Match
-
-make
-
-cd ../YapHash
-
-make
-
-cd ../..
+YapHash:
+	cd ../YapHash
+	make
 
 The executables in the main project directory are YapHash and Match.
 
-##Mac Installation 
+###Mac Installation 
 (tested on OS X 10.8.2)
 
-cd fftw-3.3.2
-
-configure --enable-shared
-
-make
-
-sudo make install
-
-cd ../gsl-1.9
-
-./configure
-
-make
-
-sudo make install
-
-cd ../sources/Match
-
-make
-
-cd ../..
-
+FFTW:
+	cd fftw-3.3.2
+	configure --enable-shared
+	make
+	sudo make install
+	
+GSL:
+	cd ../gsl-1.9
+	./configure
+	make
+	sudo make install
+	
+Match:	
+	cd ../sources/Match
+	make
+  
 Use Xcode and the attached project to build YapHash.
-
-cd ../..
 
 You find the YapHash executable in a directory specified by Xcode.
 
@@ -100,9 +84,8 @@ You find the YapHash executable in a directory specified by Xcode.
 ###Usage
 Set the Library Path (necessary only for Linux):
 
-LD_LIBRARY_PATH=/usr/local/lib:./FW_1.3.1_Lin64/lib
-
-export LD_LIBRARY_PATH
+    LD_LIBRARY_PATH=/usr/local/lib:./FW_1.3.1_Lin64/lib
+    export LD_LIBRARY_PATH
 
 YapHash is a command line tool and expects at least two arguments; 
 First is the configuration file e.g. _hash.cfg_, second is the input wave file. 
