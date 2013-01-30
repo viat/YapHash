@@ -34,26 +34,30 @@ git clone https://github.com/viat/YapHash
 (tested on 2.6.32-5-amd64 x86_64 Debian GNU/Linux 6.0)
 
 FFTW:
-	cd fftw-3.3.2
-	CFLAG="-fPIC"
-	export CFLAG
-	configure --enable-shared
-	make
-	sudo make install
+
+    cd fftw-3.3.2
+    CFLAG="-fPIC"
+    export CFLAG
+    configure --enable-shared
+    make
+    sudo make install
 
 GSL:
-	cd ../gsl-1.9
-	./configure
-	make
-	sudo make install
+
+    cd ../gsl-1.9
+    ./configure
+    make
+    sudo make install
 
 Match:
-	cd ../sources/Match
-	make
+
+    cd ../sources/Match
+    make
 
 YapHash:
-	cd ../YapHash
-	make
+
+    cd ../YapHash
+    make
 
 The executables in the main project directory are YapHash and Match.
 
@@ -61,20 +65,23 @@ The executables in the main project directory are YapHash and Match.
 (tested on OS X 10.8.2)
 
 FFTW:
-	cd fftw-3.3.2
-	configure --enable-shared
-	make
-	sudo make install
+
+    cd fftw-3.3.2
+    configure --enable-shared
+    make
+    sudo make install
 	
 GSL:
-	cd ../gsl-1.9
-	./configure
-	make
-	sudo make install
+
+    cd ../gsl-1.9
+    ./configure
+    make
+    sudo make install
 	
 Match:	
-	cd ../sources/Match
-	make
+
+    cd ../sources/Match
+    make
   
 Use Xcode and the attached project to build YapHash.
 
