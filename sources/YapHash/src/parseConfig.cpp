@@ -4,7 +4,7 @@
  * @author  	Gary Grutzek
  * @brief		Config file parser
  * @details		Config file parser
- *
+ *              allow mfccCoeff=0 for Haitsma Kalker Hash knospe 2013
  * @copyright  	Copyright (c) 2012 Gary Grutzek<br>
  * 				Cologne University of Applied Sciences<br>
  * 				<br>
@@ -124,7 +124,7 @@ int parseConfig(const char *configfile, Parameter *pParam) {
     
     if (!( pParam->windowSize && pParam->stepSize && pParam->declickerThreshold
           && pParam->energyThreshold && pParam->hiCut  && pParam->loCut && pParam->maxAudioLen 
-          && pParam->maxHashLen && pParam->melCoeffs && pParam->mfccCoeffs && pParam->minAudioLen 
+          && pParam->maxHashLen && pParam->melCoeffs && pParam->minAudioLen 
           && pParam->samplerate && pParam->vadThreshold && pParam->member>0 && pParam->J && pParam->factor))
 		return CONFIG_ERROR;
 

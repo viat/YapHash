@@ -6,7 +6,7 @@
  * @details		Mel filter bank,
  * 	   			logarithmic filterbank, mel-style but without linear spacing,
  * 	   			log spacing from lowest to highest freq
- *
+ *              added switch for bark scale, knospe 2013
  * @copyright  	Copyright (c) 2012 Gary Grutzek<br>
  * 				Cologne University of Applied Sciences<br>
  * 				<br>
@@ -28,6 +28,8 @@
 #include <iostream>
 
 #define SAMPLE_RATE 8000.0f
+
+//#define BARK
 
 MelFb::MelFb(int fftSize, int numBanks, int locut, int hicut)
 {
@@ -185,18 +187,32 @@ void MelFb::applyMelFB(Fw32f **output, const Stft& stft)
     //        throw "applyMelFB failed";
 }
 
-#pragma mark helper functions
-
+#ifdef BARK
 Fw32f MelFb::linToMel(Fw32f linFreq)
 {
+    // b = 26.81f/(1960+f) - 0.53
+    return (26.81f*linFreq / (1960.0f+linFreq) -0.53f);
+}
+
+Fw32f MelFb::melToLin(Fw32f linFreq)
+{
+    // f = - 490(53+100b)/(-657+25*b)
+    return (- 490.0f*(53.0f+100.0f*linFreq)/(-657.0f+25.0*linFreq));
+}
+
+#else
+Fw32f MelFb::linToMel(Fw32f linFreq)
+{
+    // m = 2595 * log10(1+f/700)
     return (2595.0f * (logf(1.0f + linFreq / 700.0f) / logf(10.0f)));
 }
 
 Fw32f MelFb::melToLin(Fw32f linFreq)
 {
+    // f = (m/2595)*10
     return (700.0f * (powf(10.0f, (linFreq / 2595.0f)) - 1.0f));
 }
-
+#endif
 
 
 
