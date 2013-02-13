@@ -4,6 +4,8 @@
  * @author  	Gary Grutzek
  * @brief		Utilities
  * @details		file writer for debugging and csv output
+ *              Debug Audio output added
+ *              knospe Jan 31, 2013
  *
  * @copyright  	Copyright (c) 2012 Gary Grutzek<br>
  * 				Cologne University of Applied Sciences<br>
@@ -42,6 +44,15 @@
 int debugToCSV(std::string fileName, float *data, int len);
 
 /**
+ * write raw audio data to csv file for debugging purposes
+ * @param fileName csv file name to write to
+ * @param data input data
+ * @param len length of data
+ * @return
+ */
+int debugShortToCSV(std::string fileName, short *data, int len);
+
+/**
  * write to csv file
  * @param audioFileName
  * @param data
@@ -49,6 +60,15 @@ int debugToCSV(std::string fileName, float *data, int len);
  * @return
  */
 int writeToCSV(std::string audioFileName, int *data, int len);
+
+/**
+ * write to bin file
+ * @param audioFileName
+ * @param data
+ * @param len
+ * @return
+ */
+int writeIndexToBin(std::string audioFileName, unsigned long *data, int len);
 
 /**
  * write hash data with position to csv file

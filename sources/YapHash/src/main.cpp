@@ -5,7 +5,8 @@
 
  Copyright (c) 2012 Gary Grutzek
  Cologne University of Applied Sciences
-
+ 
+ added binary output knospe 2013
 
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
@@ -30,16 +31,18 @@
 #include <malloc.h>
 #include <stdlib.h>
 #endif
-
+#include "time.h"
 #include "Audio.h"
 #include "melFB.h"  		// mel-filterbank
 #include "YapHash.h"
+#include "HKHash.h"
 #include "WaveLash.h"
 #include "parseConfig.h"	// parse config file
 #include "VIATUtilities.h"	// some helper functions
 using namespace std;
 
-//#define WAVELASH
+// #define WAVELASH
+
 #define MIN(X,Y) ((X) < (Y) ? (X) : (Y))
 
 /**
@@ -53,7 +56,7 @@ int main(int argc, char *argv[])
 	// check for input arguments
 	if (argc < 3)
 	{
-		cout << "usage: " << argv[0] << " <config file> <input wave file> <output csv filename (optional)>" << endl;
+		cout << "usage: " << argv[0] << " <config file> <input wave file> <output csv filename (optional)> <output bin filename (optional)" << endl;
 		return -1;
 	}
 
@@ -68,7 +71,7 @@ int main(int argc, char *argv[])
 		}
 
 		// new audio object
-		Audio *audio = new Audio(argv[2], param.vadThreshold, param.declickerThreshold, param.preEmphasizeFactor);
+		Audio *audio = new Audio(argv[2], param.vadThreshold, param.declickerThreshold, param.preEmphasizeFactor, param.debugLevel);
 
 		// create mel-filterbank
 		MelFb *melBank = new MelFb(param.windowSize, param.melCoeffs + 1, param.loCut, param.hiCut);
@@ -83,30 +86,38 @@ int main(int argc, char *argv[])
 			delete melBank;
 
 		WaveLash *pHash = new WaveLash(*audio, &param);
-#else
-		YapHash *pHash = new YapHash(*audio, *melBank, &param);
+
+#else 
+      
+        YapHash *pHash = new YapHash(*audio, *melBank, &param);
+   
 #endif
 
 		if (param.debugLevel > 0)
 		{
 			Fw64u timeStamp2 = fwGetCpuClocks(); // get timestamp
-			cout << (timeStamp2 - timeStamp1) / (2.4 * 1E9) << endl;
+            const Fw64f MY_CLOCKS_PER_SEC = 2.4*1E9; // depends on system
+			cout << "<INFO> Time elapsed: " << (timeStamp2 - timeStamp1)/MY_CLOCKS_PER_SEC << "s" << endl;
 		}
-
+        // (2.4 * 1E9)
 		// write to file
 		int len = MIN(pHash->length(), param.maxHashLen); // a maximum of 100 hashvalues should be sufficient
 
 		if (argc > 3)
 		{
 			writeIndexToCSV(argv[3], pHash->index, len); // write to csv with given name
-			cout << "<INFO> wrote hash vectors to file: " << argv[3] << endl;
+			cout << "<INFO> Wrote hash vectors to csv file: " << argv[3] << endl;
 		}
 		else
 		{
 			// write to csv with audio filename + .csv
 			writeIndexToCSV(argv[2], pHash->index, len);
 		}
-
+        if (argc > 4)
+		{
+			writeIndexToBin(argv[4], pHash->index, len); // write to bin with given name
+			cout << "<INFO> Wrote hash vectors to bin file: " << argv[4] << endl;
+		}
 		// free memory
 		delete pHash;
 		delete audio;

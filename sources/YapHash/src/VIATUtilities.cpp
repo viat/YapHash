@@ -4,6 +4,8 @@
  * @author  	Gary Grutzek
  * @brief		Utilities
  * @details		file writer for debugging and csv output
+ *              Debug Audio output added
+ *              knospe Jan 31, 2013
  *
  * @copyright  	Copyright (c) 2012 Gary Grutzek<br>
  * 				Cologne University of Applied Sciences<br>
@@ -46,7 +48,7 @@ int getFFTLength(int windowSize)
     return (1 << fftOrder); // 2^fftOrder
 }
 
-// write data array to file 
+// write data array to file
 int writeIndexToCSV(std::string audioFileName, unsigned long *data, int len)
 {
     // create csv name from audiofile name
@@ -65,21 +67,57 @@ int writeIndexToCSV(std::string audioFileName, unsigned long *data, int len)
         csvFile << data[i] << "," << data[i+1] << std::endl;
     }
     csvFile.close();
-    
+   
     return 0;
 }
 
 
-// write data array to file 
+// write data array to file
+int writeIndexToBin(std::string audioFileName, unsigned long *data, int len)
+{
+    char b;
+    int size;
+    size = sizeof(unsigned long);
+
+    // create csv name from audiofile name
+    std::string fileName = audioFileName;
+    fileName.replace(fileName.length()-3, fileName.length(), "bin");
+	// std::cout << "Write Data to: " << fileName << std::endl;
+    
+	std::ofstream binFile;
+    binFile.open(fileName.c_str());
+    
+    // write data
+       
+    for (int i=0; i<2*len; i+=2) {
+        //if (data[i] != 0)
+        for (int j=0; j<4; j++)  // assume 32 Bit Hash, other lengths TBD
+        {
+            b=(data[i+1]>>(8*j)) & 255;
+            binFile << b ;
+        }
+       
+    }
+    // binFile << std::endl;
+    binFile.close();
+     return 0;
+}
+
+
+
+
+
+
+// write data array to file
 int writeToCSV(std::string audioFileName, int *data, int len)
 {
     // create csv name from audiofile name
     std::string fileName = audioFileName;
     std::cout << fileName << std::endl;
     fileName.replace(fileName.length()-3, fileName.length(), "csv");
-	// std::cout << "Write Data to: " << fileName << std::endl;
+    // std::cout << "Write Data to: " << fileName << std::endl;
     
-	std::ofstream csvFile;
+    std::ofstream csvFile;
     csvFile.open(fileName.c_str());
     
     // write data
@@ -87,14 +125,15 @@ int writeToCSV(std::string audioFileName, int *data, int len)
     
     for (int i=0; i<len; i+=2)
     {
-       // if (data[i] != 0)
-            //		Position		Feature
-            csvFile << data[i] << "," << data[i+1] << std::endl;
+        // if (data[i] != 0)
+        //          Position                Feature
+        csvFile << data[i] << "," << data[i+1] << std::endl;
     }
     csvFile.close();
     
     return 0;
 }
+
 
 int debugToCSV(std::string fileName, float *data, int len)
 {
@@ -113,6 +152,25 @@ int debugToCSV(std::string fileName, float *data, int len)
     
     return 0;    
 }
+
+int debugShortToCSV(std::string fileName, short *data, int len)
+{
+    
+	std::ofstream csvFile;
+    csvFile.open(fileName.c_str());
+    
+    // write data
+    int i;
+    for (i=0; i<len-1; i++)
+    {
+        csvFile << data[i] << "," << std::endl;
+    }
+    csvFile << data[i+1] << ";" << std::endl;
+    csvFile.close();
+    
+    return 0;
+}
+
 int debug2DToCSV(std::string fileName, Array2d_32f *matrix , int x, int y)
 {
     
