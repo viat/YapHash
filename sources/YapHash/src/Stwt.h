@@ -34,15 +34,19 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
+#include <stdio.h>
+
 
 #include <math.h>
 #include <gsl/gsl_wavelet.h>
+
+
 
 class Stwt
 {
 	public:
 	    /// default constructor.
-		Stwt(const Audio& rAudio, int WindowSize, int FeedRate, int J, std::string nm, size_t member);
+		Stwt(const Audio& rAudio, int WindowSize, int FeedRate, int J, std::string nm, size_t member, int debugLevel);
 		/// destructor.
 	    ~Stwt();
 	    /// short time wavelet transformation for each window is stored here (definition: mSpectrogramm[NoOfWindows][FwtLen]).
@@ -57,6 +61,8 @@ class Stwt
 	    std::string mNm;
 	    /// Specific member of the wavelet family
 	    size_t mMember;
+        /// debug level
+        int mdebugLevel;
 	    /**
 	     *
 	     * @param rAudio audio material.

@@ -108,7 +108,7 @@ class WaveLash
 		 * @param result 1D array: result[NoOfWindows]
 		 * @param stwt the wavelet coefficients per frame.
 		 */
-		void CalculateZeroCrossingRate(Fw32f **result, Stwt &stwt);
+		void CalculateZeroCrossingRate(Fw32f **result, Stwt &stwt, int debugLevel);
 };
 
 #endif /* WAVELASH_H_ */

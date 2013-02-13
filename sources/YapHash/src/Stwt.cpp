@@ -3,16 +3,32 @@
  * @date	Nov 6, 2012
  * @author  Julian Strobl
  * @brief	
+ *              added debug knospe 2013
+ * @copyright  	Copyright (c) 2012 Julian Strobl<br>
+ * 				Cologne University of Applied Sciences<br>
+ * 				<br>
+ * 				This program is free software: you can redistribute it and/or modify
+ *				it under the terms of the GNU General Public License as published by
+ *				the Free Software Foundation, either version 3 of the License, or
+ * 				(at your option) any later version.<br>
+ *				This program is distributed in the hope that it will be useful,
+ *				but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *				MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ *				GNU General Public License for more details.<br>
+ *				You should have received a copy of the GNU General Public License
+ *				along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+
 #include "Stwt.h"
+
 
 
 // directly from gsl
 #define ELEMENT(a,stride,i) ((a)[(stride)*(i)])
 
-Stwt::Stwt(const Audio& rAudio, int WindowSize, int FeedRate, int J, std::string nm, size_t member) :
-		mSpectrogramm(NULL), mFwtLen(0), mNoOfWindows(0), mJ(J), mNm(nm), mMember(member)
+Stwt::Stwt(const Audio& rAudio, int WindowSize, int FeedRate, int J, std::string nm, size_t member, int debugLevel) :
+		mSpectrogramm(NULL), mFwtLen(0), mNoOfWindows(0), mJ(J), mNm(nm), mMember(member), mdebugLevel(debugLevel)
 {
 	this->CalcStwt(rAudio, WindowSize, FeedRate);
 }
@@ -38,6 +54,14 @@ int Stwt::CalcStwt(const Audio& rAudio, int WindowSize, int FeedRate)
 	// calc fwt length => next power of 2
 	FwtOrder = ceil(logf(WindowSize) / logf(2.0f));
 	mFwtLen = 1 << FwtOrder;
+    
+    if (mdebugLevel > 2)
+	{
+		
+        std::cout << "<INFO> FwtLength=" << mFwtLen << std::endl;
+        std::cout << "<INFO> NoOfWindows=" << mNoOfWindows << std::endl;
+
+	}
 
 	// alloc multidimensional array
 	mSpectrogramm = new Fw32f *[mNoOfWindows]; // alloc some pointers ...
@@ -70,15 +94,19 @@ int Stwt::CalcStwt(const Audio& rAudio, int WindowSize, int FeedRate)
 
 	w = gsl_wavelet_alloc(nm, mMember);
 	work = gsl_wavelet_workspace_alloc(mFwtLen);
-
-	// calc fwt for each window
+    
+    
+	// calc fwt for each window j
 	for (i = j = 0; i + mFwtLen < rAudio.length(); i += FeedRate, j++)
 	{
 		this->CopyConvertAndMultiply(&rAudio.samples()[i], FrameBuffer, Hamming, mFwtLen, WindowSize);
-
-		for (int z = mFwtLen; z >= mFwtLen/(int)pow(2.0,(double)(mJ - 1)); z >>= 1)
-			dwt_step(w, FrameBuffer, 1, z, gsl_wavelet_forward, work);
-
+        
+        if (mJ >0) {
+		  for (int z = mFwtLen; z >= mFwtLen/(int)pow(2.0,(double)(mJ - 1)); z >>= 1) {
+			 dwt_step(w, FrameBuffer, 1, z, gsl_wavelet_forward, work);
+         
+          }
+        }
 		for (int a = 0; a < mFwtLen; a++)
 			mSpectrogramm[j][a] = (Fw32f) FrameBuffer[a];
 	}
