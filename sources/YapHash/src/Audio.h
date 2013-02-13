@@ -9,6 +9,8 @@
  *  				- preemphasize high frequencies
  *  				- normalize
  *  				- voice activity detection
+ *              Debug Audio output added
+ *              knospe Jan 31, 2013
  
  * @copyright  	Copyright (c) 2012 Gary Grutzek<br>
  * 				Cologne University of Applied Sciences<br>
@@ -44,8 +46,9 @@ public:
      * @param thresholdVAD threshold for voice activity detection
      * @param thresholdDeclicker threshold for declicker
      * @param preEmphasizeFactor factor to preamphasize high frequencies
+     * @param debugLevel
      */
-    Audio(const char *filePath, int thresholdVAD, int thresholdDeclicker, int preEmphasizeFactor);
+    Audio(const char *filePath, int thresholdVAD, int thresholdDeclicker, int preEmphasizeFactor, int debugLevel);
     
     /**
      *  convenience constructor: get wavesamples of type double and convert to ipp32f

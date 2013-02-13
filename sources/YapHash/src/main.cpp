@@ -35,7 +35,7 @@
 #include "Audio.h"
 #include "melFB.h"  		// mel-filterbank
 #include "YapHash.h"
-#include "HKHash.h"
+// #include "HKHash.h"     // can use YapHash for Haitsma-Kalker Hash
 #include "WaveLash.h"
 #include "parseConfig.h"	// parse config file
 #include "VIATUtilities.h"	// some helper functions

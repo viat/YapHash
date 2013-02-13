@@ -3,6 +3,9 @@
  * @date		April 04, 2011
  * @author  	Gary Grutzek
  *
+ *              Debug Audio output added
+ *              knospe Jan 31, 2013
+ *
  * @copyright  	Copyright (c) 2012 Gary Grutzek<br>
  * 				Cologne University of Applied Sciences<br>
  * 				<br>
@@ -75,7 +78,7 @@ void deClicker(Fw32f *samples, int len, int threshold)
  *  - cuts to 6 seconds 
  *  - saves samples as scaled float between -1 and 1
  */
-Audio::Audio(const char *filePath, int thresholdVAD, int thresholdDeclicker, int preEmphasizeFactor)
+Audio::Audio(const char *filePath, int thresholdVAD, int thresholdDeclicker, int preEmphasizeFactor, int debugLevel)
 {
     waveFile wave;
     
@@ -86,6 +89,13 @@ Audio::Audio(const char *filePath, int thresholdVAD, int thresholdDeclicker, int
     len = MIN(6*fs, wave.dataLength);// max 6s of audio 
     
     // len = wave.dataLength;
+    
+    if (debugLevel > 2){
+
+        debugShortToCSV("debugPreAudio.csv",wave.data,len);
+        cout << "<INFO> Wrote original audio data to file debugPreAudio.csv" << endl;
+     }
+
     
     // convert to float and divide by 2^15
     Fw32f *tmpWav = fwsMalloc_32f(len);
@@ -109,10 +119,17 @@ Audio::Audio(const char *filePath, int thresholdVAD, int thresholdDeclicker, int
     // Voice activity detection / input alignement
     cutACFVad_I(tmpWav, &len, thresholdVAD);
     
+    
+    
     // copy samples and convert to float32
     samples32f = fwsMalloc_32f(len);
     fwsCopy_32f(tmpWav, samples32f, len);   
     
+    if (debugLevel > 2){
+        
+        debugToCSV("debugPostAudio.csv",samples32f,len);
+        cout << "<INFO> Wrote processed audio data to file debugPostAudio.csv" << endl;
+    }
     delete wave.data;
     fwsFree(tmpWav);
 }
@@ -125,6 +142,8 @@ Audio::Audio(double *waveSamples, int waveLength)
     // copy samples and convert to float32
     samples32f = fwsMalloc_32f(waveLength);
     fwsConvert_64f32f(waveSamples, samples32f, waveLength);
+    
+   
 }
 
 // Destruktor

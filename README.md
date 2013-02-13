@@ -16,6 +16,10 @@ The YapHash fingerprint is based on the spectrogram and Mel-frequency-cepstrum-c
 
 Grutzek, G., Strobl, J., Mainka, B., Kurth, F., Pörschmann, C., Knospe, H. (2012). A Perceptual Hash for the Identification of Telephone Speech, 10. ITG Symposium Speech Communication, Braunschweig 2012, In: ITG Fachbericht 236: Sprachkommunikation, VDE Verlag.
 
+YapHash can also compute the well known Audio fingerprint defined by Haitsma et. al. :
+ J.A. Haitsma and T. Kalker, “A Highly Robust Audio Fingerprinting System: Proc. International Conf. on Music Information Retrieval (ISMIR) 2002, Paris. 
+ Information on the necessary parameters can be found in the hash.cfg file.
+
 ###WaveLash - Wavelet Audio Hashing
 
 WaveLash is an experimental add-on to YapHash. Instead of using FFT and MFCCs, a J-level *Wavelet* transform with a specific wavelet is performed.
@@ -96,11 +100,11 @@ Set the Library Path (necessary only for Linux):
 
 YapHash is a command line tool and expects at least two arguments; 
 First is the configuration file e.g. _hash.cfg_, second is the input wave file. 
-To specify the output file of the fingerprint, a third argument can be passed optionally. 
+To specify the output file of the fingerprint, a third and fourth argument can be passed optionally. 
 
 Example:
 
-    ./YapHash hash.cfg SPIT_01_ABeier.wav out01.csv
+    ./YapHash hash.cfg SPIT_01_ABeier.wav out01.csv out01.bin
     
 For testing purposes, an additional tool for matching audio hashes has been provided. The maximum number n of matches for two of the above fingerprint files is computed. An n-match means that n vectors including their relative time offsets coincide.
 
