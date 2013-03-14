@@ -210,7 +210,8 @@ void YapHash::calcHash(const Audio& audio, MelFb melBank, Parameter *param)
         //std::cout << "e: " << e[i] << std::endl;
         if (e[i] > (float)(param->energyThreshold/500.0) ) {
             mfcHash[k] = bin2Dec(&dMfcc.data[i][0], mfccCoeffs-2);
-            stftHash[k] = bin2Dec(&dStft.data[i][0], stftCoeffs-2); 
+            stftHash[k] = bin2Dec(&dStft.data[i][0], stftCoeffs-2);
+            // 
             // cout << stftHash[k] << endl;
             // compose hash from mfccc and stft derivates
             // + 1 in hash[k] removed knospe
@@ -234,14 +235,20 @@ void YapHash::calcHash(const Audio& audio, MelFb melBank, Parameter *param)
 }
 
 // binary to decimal: vector € {0,1}, len < 32
+// corrected for len<=64 , knospe 2013
 Fw64u YapHash::bin2Dec(Fw32f *vector, int len)
 {
-    unsigned long hash=0;    
-    //  cout << len << endl;
+    unsigned long hash=0, zwei=0;
+     // cout << len << endl;
     for (int i=0; i<len; i++) {
-        // cout << i << ": " << vector[i] << endl;
-        hash |= (((int)vector[len-i-1]) << i);
+        
+        if (vector[len-i-1]==1)
+            zwei = (unsigned long)(1) << i;
+        
+        hash |= zwei;
+     
     }
+    // cout << hash << endl;
     return hash;
 }
 
