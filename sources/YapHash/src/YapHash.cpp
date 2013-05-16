@@ -242,11 +242,10 @@ Fw64u YapHash::bin2Dec(Fw32f *vector, int len)
      // cout << len << endl;
     for (int i=0; i<len; i++) {
         
-        if (vector[len-i-1]==1)
-            zwei = (unsigned long)(1) << i;
-        
-        hash |= zwei;
-     
+        if (vector[len-i-1]==1) {
+            zwei = (unsigned long)(1) << i; // 2^i
+            hash |= zwei;                   // hash or 2^i
+        }
     }
     // cout << hash << endl;
     return hash;
